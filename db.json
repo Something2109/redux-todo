@@ -1,0 +1,16 @@
+{
+    "todo": [
+        {
+            "id": "1",
+            "title": "First job",
+            "description": "Lorem ipsum dolor sit amet",
+            "isDone": false
+        },
+        {
+            "id": "2",
+            "title": "Second job",
+            "description": "Lorem ipsum dolor sit amet",
+            "isDone": true
+        }
+    ]
+}
