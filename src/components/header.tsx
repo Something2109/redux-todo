@@ -1,7 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
-import { Languages } from "../lang";
 import type { DetailedHTMLProps, SelectHTMLAttributes } from "react";
+import routes from "../routes";
+import type { RouteObject } from "../routes";
+import { Languages } from "../lang";
 
 function ChangeLanguageSelect(
   props: DetailedHTMLProps<
@@ -27,6 +29,24 @@ function ChangeLanguageSelect(
   );
 }
 
+function NavigationBar({ routes }: { routes: RouteObject[] }) {
+  const { t } = useTranslation();
+
+  return (
+    <nav>
+      <ul className="flex flex-row gap-4 items-center">
+        {routes.map(({ path, prefix }) => (
+          <li key={path}>
+            <NavLink className="hover:scale-95 transition-[scale]" to={path}>
+              {t(`${prefix}.title`)}
+            </NavLink>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
 export default function Header() {
   return (
     <header className="flex flex-row justify-between items-center bg-blue-500 text-white px-[5%] py-6">
@@ -35,31 +55,7 @@ export default function Header() {
       <div className="flex flex-row gap-4 items-center">
         <ChangeLanguageSelect className="focus:outline-none" />
 
-        <nav>
-          <ul className="flex flex-row gap-4 items-center">
-            <li>
-              <NavLink className="hover:scale-95 transition-[scale]" to="/">
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                className="hover:scale-95 transition-[scale]"
-                to="/about"
-              >
-                About
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                className="hover:scale-95 transition-[scale]"
-                to="/contact"
-              >
-                Contact
-              </NavLink>
-            </li>
-          </ul>
-        </nav>
+        <NavigationBar routes={routes} />
       </div>
     </header>
   );
