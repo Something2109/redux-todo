@@ -8,8 +8,9 @@ import { thunk, type ThunkAction } from "redux-thunk";
 import { persistStore, persistReducer } from "redux-persist";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 import storage from "redux-persist/lib/storage";
+import { reducer as lang } from "./reducers/lang";
 
-const reducerObject = {};
+const reducerObject = { lang };
 const mainReducer = combineReducers(reducerObject);
 
 type MainState = ReturnType<typeof mainReducer>;
