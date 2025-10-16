@@ -11,7 +11,7 @@ const routes: RouteObject[] = [
   {
     path: "/",
     exact: true,
-    prefix: "home",
+    prefix: "todo",
     Component: lazy(() => import("../pages/Home")),
   },
 ];

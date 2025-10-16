@@ -1,4 +1,4 @@
 import common from "./common";
-import home from "./home";
+import todo from "./todo";
 
-export default { translation: { home, common } };
+export default { translation: { common, todo } };
