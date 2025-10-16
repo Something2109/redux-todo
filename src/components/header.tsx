@@ -1,9 +1,16 @@
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
-import type { DetailedHTMLProps, SelectHTMLAttributes } from "react";
+import type {
+  ChangeEvent,
+  DetailedHTMLProps,
+  SelectHTMLAttributes,
+} from "react";
+import { useDispatch, useSelector } from "react-redux";
 import routes from "../routes";
 import type { RouteObject } from "../routes";
-import { Languages } from "../lang";
+import { Languages, type SupportedLanguage } from "../lang";
+import type { MainState } from "../redux/store";
+import { createLangAction } from "../redux/reducers/lang";
 
 function ChangeLanguageSelect(
   props: DetailedHTMLProps<
@@ -11,14 +18,19 @@ function ChangeLanguageSelect(
     HTMLSelectElement
   >
 ) {
-  const { i18n } = useTranslation();
+  const lang = useSelector<MainState, SupportedLanguage>((state) => state.lang);
+  const dispatch = useDispatch();
+
+  const onChange = (evt: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(createLangAction(evt.target.value as SupportedLanguage));
+  };
 
   return (
     <select
       {...props}
       title="Change Language"
-      defaultValue={i18n.language}
-      onChange={(evt) => i18n.changeLanguage(evt.target.value)}
+      defaultValue={lang}
+      onChange={onChange}
     >
       {Object.values(Languages).map((lang) => (
         <option key={`lang-${lang}`} value={lang}>
