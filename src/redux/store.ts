@@ -4,6 +4,7 @@ import {
   legacy_createStore,
   type Reducer,
 } from "redux";
+import { useDispatch, useSelector } from "react-redux";
 import { thunk } from "redux-thunk";
 import { persistStore, persistReducer } from "redux-persist";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
@@ -32,5 +33,8 @@ const store = legacy_createStore(persistedReducer, applyMiddleware(thunk));
 
 const persistor = persistStore(store);
 
-export { store, persistor };
+const useMainState = useSelector.withTypes<MainState>();
+const useMainDispatch = useDispatch.withTypes<MainDispatch>();
+
+export { store, persistor, useMainState, useMainDispatch };
 export type { MainState, MainAction, MainDispatch };

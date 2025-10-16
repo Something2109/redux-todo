@@ -5,11 +5,10 @@ import type {
   DetailedHTMLProps,
   SelectHTMLAttributes,
 } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import routes from "../routes";
 import type { RouteObject } from "../routes";
 import { Languages, type SupportedLanguage } from "../lang";
-import type { MainState } from "../redux/store";
+import { useMainDispatch, useMainState } from "../redux/store";
 import { createLangAction } from "../redux/reducers/lang";
 
 function ChangeLanguageSelect(
@@ -18,8 +17,8 @@ function ChangeLanguageSelect(
     HTMLSelectElement
   >
 ) {
-  const lang = useSelector<MainState, SupportedLanguage>((state) => state.lang);
-  const dispatch = useDispatch();
+  const lang = useMainState((state) => state.lang);
+  const dispatch = useMainDispatch();
 
   const onChange = (evt: ChangeEvent<HTMLSelectElement>) => {
     dispatch(createLangAction(evt.target.value as SupportedLanguage));
