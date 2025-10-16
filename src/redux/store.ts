@@ -4,27 +4,28 @@ import {
   legacy_createStore,
   type Reducer,
 } from "redux";
-import { thunk, type ThunkAction } from "redux-thunk";
+import { thunk } from "redux-thunk";
 import { persistStore, persistReducer } from "redux-persist";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 import storage from "redux-persist/lib/storage";
 import { reducer as lang } from "./reducers/lang";
+import { reducer as todo } from "./reducers/todo";
 
-const reducerObject = { lang };
+const reducerObject = { lang, todo };
 const mainReducer = combineReducers(reducerObject);
 
 type MainState = ReturnType<typeof mainReducer>;
-type ReducerAction = Parameters<typeof mainReducer>[1];
-type MainAction = ThunkAction<void, MainState, unknown, ReducerAction>;
+type MainAction = Parameters<typeof mainReducer>[1];
+type MainDispatch = typeof store.dispatch;
 
-const persistedReducer = persistReducer<MainState, ReducerAction>(
+const persistedReducer = persistReducer<MainState, MainAction>(
   {
     key: "root",
     storage,
-    whitelist: ["lang"],
+    // whitelist: ["lang", "todo"],
     stateReconciler: autoMergeLevel2,
   },
-  mainReducer as unknown as Reducer<MainState, ReducerAction>
+  mainReducer as unknown as Reducer<MainState, MainAction>
 );
 
 const store = legacy_createStore(persistedReducer, applyMiddleware(thunk));
@@ -32,4 +33,4 @@ const store = legacy_createStore(persistedReducer, applyMiddleware(thunk));
 const persistor = persistStore(store);
 
 export { store, persistor };
-export type { MainState, ReducerAction, MainAction };
+export type { MainState, MainAction, MainDispatch };
