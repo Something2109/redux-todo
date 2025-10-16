@@ -10,8 +10,9 @@ import { persistStore, persistReducer } from "redux-persist";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 import storage from "redux-persist/lib/storage";
 import { reducer as lang } from "./reducers/lang";
+import { reducer as todo } from "./reducers/todo";
 
-const reducerObject = { lang };
+const reducerObject = { lang, todo };
 const mainReducer = combineReducers(reducerObject);
 
 type MainState = ReturnType<typeof mainReducer>;
@@ -22,7 +23,7 @@ const persistedReducer = persistReducer<MainState, MainAction>(
   {
     key: "root",
     storage,
-    // whitelist: ["lang", "todo"],
+    whitelist: ["lang"],
     stateReconciler: autoMergeLevel2,
   },
   mainReducer as unknown as Reducer<MainState, MainAction>
