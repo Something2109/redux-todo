@@ -6,13 +6,13 @@ import {
   type MainState,
 } from "../../redux/store";
 import {
-  createTodoAction,
   TodoActionType,
   type Todo,
   type TodoPayloadUpdate,
 } from "../../redux/reducers/todo";
 import AddRowWithTranslation from "./AddRow";
 import Button from "../common/Button";
+import { TodoThunkAction } from "../../redux/thunk/todo";
 
 export default function TodoTable() {
   const todos = useMainState((state: MainState) => state.todo);
@@ -21,18 +21,18 @@ export default function TodoTable() {
 
   const onAdd = useCallback(
     (title: string, description: string) =>
-      dispatch(createTodoAction[TodoActionType.CREATE]({ title, description })),
+      dispatch(TodoThunkAction[TodoActionType.CREATE]({ title, description })),
     [dispatch]
   );
 
   const onChange = useCallback(
     (todo: TodoPayloadUpdate) =>
-      dispatch(createTodoAction[TodoActionType.UPDATE](todo)),
+      dispatch(TodoThunkAction[TodoActionType.UPDATE](todo)),
     [dispatch]
   );
 
   const onDelete = useCallback(
-    (id: string) => dispatch(createTodoAction[TodoActionType.DELETE]({ id })),
+    (id: string) => dispatch(TodoThunkAction[TodoActionType.DELETE]({ id })),
     [dispatch]
   );
 
