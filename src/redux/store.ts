@@ -11,8 +11,9 @@ import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 import storage from "redux-persist/lib/storage";
 import { reducer as lang } from "./reducers/lang";
 import { reducer as todo } from "./reducers/todo";
+import { reducer as loading } from "./reducers/loading";
 
-const reducerObject = { lang, todo };
+const reducerObject = { lang, todo, loading };
 const mainReducer = combineReducers(reducerObject);
 
 type MainState = ReturnType<typeof mainReducer>;
