@@ -19,7 +19,7 @@ type TodoPayloadDelete = Pick<Todo, "id">;
 
 type TodoActionCreate = {
   type: typeof TodoActionType.CREATE;
-  payload: TodoPayloadCreate;
+  payload: Todo;
 };
 
 type TodoActionUpdate = {
@@ -71,13 +71,7 @@ const todoHandler: {
   [key in TodoActionType]: Reducer<Todo[], TodoAction<key>, Todo[]>;
 } = {
   [TodoActionType.CREATE]: function (state = [], action): Todo[] {
-    const newObject: Todo = {
-      ...action.payload,
-      id: Date.now().toString(),
-      isCompleted: false,
-    };
-
-    return [...state, newObject];
+    return [...state, action.payload];
   },
   [TodoActionType.UPDATE]: function (state = [], action): Todo[] {
     return state.map((todo) => {
@@ -99,7 +93,12 @@ const createTodoAction: {
   [TodoActionType.CREATE]: function (
     payload: TodoPayloadCreate
   ): TodoActionCreate {
-    return { type: TodoActionType.CREATE, payload };
+    const newObject: Todo = {
+      ...payload,
+      id: Date.now().toString(),
+      isCompleted: false,
+    };
+    return { type: TodoActionType.CREATE, payload: newObject };
   },
   [TodoActionType.UPDATE]: function (
     payload: TodoPayloadUpdate
