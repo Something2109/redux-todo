@@ -6,7 +6,7 @@ export default function Home() {
   const { t } = useTranslation();
 
   return (
-    <section className="container mx-auto">
+    <section>
       <h1 className="font-bold text-2xl p-4">{t("todo.title")}</h1>
 
       <LoadingWrapper>

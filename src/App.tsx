@@ -17,15 +17,17 @@ function App() {
             <Header />
 
             <main className="h-screen dark:bg-gray-700 dark:text-white">
-              <Switch>
-                <Suspense fallback={<Loading />}>
-                  {routes.map(({ Component, ...route }, index) => (
-                    <Route key={(route.path as string) ?? index} {...route}>
-                      <Component />
-                    </Route>
-                  ))}
-                </Suspense>
-              </Switch>
+              <div className="container mx-auto">
+                <Switch>
+                  <Suspense fallback={<Loading />}>
+                    {routes.map(({ Component, ...route }, index) => (
+                      <Route key={(route.path as string) ?? index} {...route}>
+                        <Component />
+                      </Route>
+                    ))}
+                  </Suspense>
+                </Switch>
+              </div>
             </main>
           </BrowserRouter>
         </LanguageProvider>
