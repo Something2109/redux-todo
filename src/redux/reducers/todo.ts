@@ -1,6 +1,7 @@
 import type { Reducer } from "redux";
 
 const TodoActionType = {
+  LIST: "TodoList",
   CREATE: "TodoAdd",
   UPDATE: "TodoUpdate",
   DELETE: "TodoDelete",
@@ -13,9 +14,15 @@ type Todo = {
   isCompleted: boolean;
 };
 
+type TodoPayloadList = Todo[];
 type TodoPayloadCreate = Omit<Todo, "id" | "isCompleted">;
 type TodoPayloadUpdate = Partial<Todo> & Pick<Todo, "id">;
 type TodoPayloadDelete = Pick<Todo, "id">;
+
+type TodoActionList = {
+  type: typeof TodoActionType.LIST;
+  payload: TodoPayloadList;
+};
 
 type TodoActionCreate = {
   type: typeof TodoActionType.CREATE;
@@ -33,7 +40,9 @@ type TodoActionDelete = {
 };
 
 type TodoAction<Type extends TodoActionType> =
-  Type extends typeof TodoActionType.CREATE
+  Type extends typeof TodoActionType.LIST
+    ? TodoActionList
+    : Type extends typeof TodoActionType.CREATE
     ? TodoActionCreate
     : Type extends typeof TodoActionType.UPDATE
     ? TodoActionUpdate
@@ -42,7 +51,9 @@ type TodoAction<Type extends TodoActionType> =
     : TodoActionCreate | TodoActionUpdate | TodoActionDelete;
 
 type TodoPayload<Type extends TodoActionType> =
-  Type extends typeof TodoActionType.CREATE
+  Type extends typeof TodoActionType.LIST
+    ? TodoPayloadList
+    : Type extends typeof TodoActionType.CREATE
     ? TodoPayloadCreate
     : Type extends typeof TodoActionType.UPDATE
     ? TodoPayloadUpdate
@@ -70,6 +81,9 @@ const defaultDB = [
 const todoHandler: {
   [key in TodoActionType]: Reducer<Todo[], TodoAction<key>, Todo[]>;
 } = {
+  [TodoActionType.LIST]: function (_, action): Todo[] {
+    return action.payload;
+  },
   [TodoActionType.CREATE]: function (state = [], action): Todo[] {
     return [...state, action.payload];
   },
@@ -90,6 +104,9 @@ const todoHandler: {
 const createTodoAction: {
   [key in TodoActionType]: (payload: TodoPayload<key>) => TodoAction<key>;
 } = {
+  [TodoActionType.LIST]: function (payload: TodoPayloadList): TodoActionList {
+    return { type: TodoActionType.LIST, payload };
+  },
   [TodoActionType.CREATE]: function (
     payload: TodoPayloadCreate
   ): TodoActionCreate {
@@ -126,6 +143,8 @@ export { reducer, createTodoAction, TodoActionType };
 export type {
   Todo,
   TodoAction,
+  TodoPayload,
+  TodoPayloadList,
   TodoPayloadCreate,
   TodoPayloadUpdate,
   TodoPayloadDelete,
