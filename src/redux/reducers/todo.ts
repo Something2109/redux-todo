@@ -63,21 +63,6 @@ type TodoPayload<Type extends TodoActionType> =
 
 type TodoActionType = (typeof TodoActionType)[keyof typeof TodoActionType];
 
-const defaultDB = [
-  {
-    id: "1",
-    title: "First job",
-    description: "Lorem ipsum dolor sit amet",
-    isCompleted: false,
-  },
-  {
-    id: "2",
-    title: "Second job",
-    description: "Lorem ipsum dolor sit amet",
-    isCompleted: true,
-  },
-];
-
 const todoHandler: {
   [key in TodoActionType]: Reducer<Todo[], TodoAction<key>, Todo[]>;
 } = {
@@ -130,7 +115,7 @@ const createTodoAction: {
 };
 
 const reducer: Reducer<Todo[], TodoAction<TodoActionType>> = (
-  state = defaultDB,
+  state = [],
   action
 ) => {
   const handler = todoHandler[action.type];
